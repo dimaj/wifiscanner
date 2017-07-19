@@ -19,6 +19,12 @@ function cleanSecurity(security) {
 
 
 function filterBlanks(line) {
+    if (line.match(/\s*SSID\s*BSSID/gi)) {
+        return false;
+    }
+    else if (line.match(/\s*\d*\s*IBSS network/gi)) {
+        return false;
+    }
     return line.replace(/\s+/g,"").length !== 0;
 }
 
@@ -35,10 +41,12 @@ function parseLine(line, indexOfMacAddress) {
     //[5] CC
     //[6..x] SECURITY (auth/unicast/group)
 
+    var channel = components[2] ? components[2].split(',')[0] : -1 ;
+
     return {
         ssid,
         mac: components[0].toLowerCase(),
-        channel: components[2].split(",")[0],
+        channel: channel,
         security: components.splice(5).map(cleanSecurity).sort()
     };
 }

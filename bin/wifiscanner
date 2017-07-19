@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var scanner = require('../index')();
+
+scanner.scan(scanCompleteCallback, scanErrorCallback);
+
+function scanCompleteCallback(err, res) {
+    if (err) {
+        console.error('There was an error during scan', err);
+    }
+    else {
+        console.log('Found these networks:', res);
+    }
+}
+
+function scanErrorCallback(err) {
+    console.error('There was an error during scan', err);
+}
